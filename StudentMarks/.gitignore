@@ -1,1 +1,4 @@
-*.env
+StudentMarks/*.env
+Pipfile 
+**/migrations
+**/migrations/*
