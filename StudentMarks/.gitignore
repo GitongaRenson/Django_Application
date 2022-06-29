@@ -1,4 +1,4 @@
 StudentMarks/*.env
-Pipfile 
+StudentMarks/Pipfile 
 **/migrations
 **/migrations/*
