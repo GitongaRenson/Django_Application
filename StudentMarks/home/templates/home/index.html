@@ -31,7 +31,7 @@
         </tr>
       </thead>
       <tbody>
-      {% for student in student_names %}
+      {% for student in paginator_module %}
         <tr>
           <th scope="row">{{student.id}}</th>
           <td>{{student.name}}</td>
@@ -44,6 +44,22 @@
       {% endfor %}
       </tbody>
     </table>
+    <div class="pagination">
+      <span class="step-links">
+        {% if paginator_module.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ paginator_module.previous_page_number}}">previous</a>
+        {% endif %}
+        <span class="current">
+          page{{ paginator_module.numnber }} of {{ paginator_module.paginator.num_pages }}.
+        </span>
+        {% if paginator_module.has_next %}
+          <a href="?page={{ paginator_module.next_page_number }}">next</a>
+          <a href="?page={{ paginator_module.paginator.num_pages}}">last &raquo;</a>
+        {% endif %}
+      </span>
+    </div>
+    <br><br>
     <h3>Student Names rendered using Django Tables</h3>
     <table>
       {% render_table student_table %}
