@@ -7,17 +7,39 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
    STUDENTMARKS
   </head>
-  <body>
-    
-    <!-- THis is our static variable in our html Template-->
-    <p>Hello World</p>
-    
-    
+  <body> 
     <!-- This is a dynamic variable showing a string-->
     <p>{{name}}</p>
 
-    <p>{{calc}}</p>
+    {% block content %}
+
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        {% if message.tags == 'error' %}
+        <div class="bg-danger">
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        </div>
+        {% endif %}
+        {% if message.tags == 'success' %}
+        <div class="bg-success">
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        </div>
+        {% endif %}
+        {% if message.tags == 'info' %}
+        <div class="bg-info">
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    {% endif %}
+
     <h3>Student Names</h3>
+
+    <a href="{% url 'add_students' %}">
+      <button class="btn btn-success"> ADD STUDENT </button>
+    </a> 
     <table class="table table-striped">
       <thead>
         <tr>
@@ -47,22 +69,20 @@
     <div class="pagination">
       <span class="step-links">
         {% if paginator_module.has_previous %}
-          <a href="?page=1">&laquo; first</a>
-          <a href="?page={{ paginator_module.previous_page_number}}">previous</a>
+          <a href="?page=1">&laquo;  first  </a>
+          <a href="?page={{ paginator_module.previous_page_number}}">  previous  </a>
         {% endif %}
         <span class="current">
-          page{{ paginator_module.numnber }} of {{ paginator_module.paginator.num_pages }}.
+          page {{ paginator_module.number }} of {{ paginator_module.paginator.num_pages }}.
         </span>
         {% if paginator_module.has_next %}
-          <a href="?page={{ paginator_module.next_page_number }}">next</a>
-          <a href="?page={{ paginator_module.paginator.num_pages}}">last &raquo;</a>
+          <a href="?page={{ paginator_module.next_page_number }}"> next </a>
+          <a href="?page={{ paginator_module.paginator.num_pages}}"> last  &raquo;</a>
         {% endif %}
       </span>
     </div>
     <br><br>
-    <h3>Student Names rendered using Django Tables</h3>
-    <table>
-      {% render_table student_table %}
+    {% endblock %}
     </table>
   </body>
 </html>
