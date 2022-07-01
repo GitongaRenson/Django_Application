@@ -6,7 +6,7 @@ from .models import StudentNames
 from .tables import StudentTable
 from django_tables2 import RequestConfig
 from django.core.paginator import Paginator
-from .forms import AddStudentForms
+from .forms import AddStudentForms, UpdateStudentForm
 from django.template.context_processors import csrf
 from django.contrib import messages
 
@@ -40,7 +40,6 @@ def add_students(request):
             form_instance = form.save(commit=False)
             form_instance.save()
             messages.add_message(request, messages.SUCCESS, 'Data added Successfully.')
-
             return redirect('index')
         else:
             args = {'form':form}
@@ -51,7 +50,30 @@ def add_students(request):
         args.update(csrf(request))
         return render(request,'home/add-student.html',args)
 
+def update_student(request,id):
+    instance = StudentNames.objects.get(id=id)
+    print(instance)
+    if request.method == 'POST':
+        form = UpdateStudentForm(request.POST,instance=instance)
+        if form.is_valid():
+            form_instance = form.save(commit=False)
+            form.instance.name = form.cleaned_data['name']
+            form.instance.email = form.cleaned_data['email']
+            form.instance.gender = form.cleaned_data['gender']
+            form.instance.phone_number = form.cleaned_data['phone_number']
+            form.instance.course = form.cleaned_data['course']
+            form_instance.save()
+            messages.add_message(request, messages.SUCCESS, 'Data Updated Successfully.')
+            return redirect('index')
 
+        else:
+            args = {'form':form}
+            return render(request, 'home/update-student.html',args)
+    else:
+        form = UpdateStudentForm(instance=instance)
+        args = {'form':form}
+        args.update(csrf(request))
+        return render(request,'home/update-student.html',args)
 
 
 

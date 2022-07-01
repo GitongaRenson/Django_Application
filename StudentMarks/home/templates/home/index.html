@@ -10,6 +10,9 @@
   <body> 
     <!-- This is a dynamic variable showing a string-->
     <p>{{name}}</p>
+    <a href="{% 'url_index' %"> <button class="btn btn-outline-primary"> HOME </button></a>
+    <br><br>
+
 
     {% block content %}
 
@@ -34,11 +37,11 @@
       {% endfor %}
     </ul>
     {% endif %}
-
+  
     <h3>Student Names</h3>
 
     <a href="{% url 'add_students' %}">
-      <button class="btn btn-success"> ADD STUDENT </button>
+      <button class="btn btn-outline-success"> ADD STUDENT </button>
     </a> 
     <table class="table table-striped">
       <thead>
@@ -50,6 +53,7 @@
           <th scope="col">Gender</th>
           <th scope="col">Phone Number</th>
           <th scope="col">Reported On</th>
+          <th scope="col">Update Record</th>
         </tr>
       </thead>
       <tbody>
@@ -62,6 +66,11 @@
           <td>{{student.gender}}</td>
           <td>{{student.phone_number}}</td>
           <td>{{student.reported_on}}</td>
+          <td>
+            <a href="{% url 'update_student' id=student.id %}">
+              <button class="btn btn-success">Update</button>
+            </a>
+          </td>
         </tr>
       {% endfor %}
       </tbody>
