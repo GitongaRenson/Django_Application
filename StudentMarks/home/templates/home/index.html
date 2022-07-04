@@ -2,44 +2,45 @@
 <html>
   <head>
   {% load render_table from django_tables2 %}
-    <title>StudentMarks</title>
+    <title>SMS</title>
     <!-- CSS only -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-   STUDENTMARKS
+  
+
+<h1>STUDENT MANAGEMENT SYSTEM</h1> 
+   <br><br>
+   
   </head>
+  <a href="{% url 'index' %} "> <button class="btn btn-outline-primary"> HOME </button></a>
+   <br><br>
+   {% if user.is_authenticated %}
+   <p>{{user.first_name}}{{user.last_name}}</p>
+   <a href="{% url 'sign_out' %}">
+    <button class="btn btn-outline-success"> Sign out </button>
+  </a>
+   {% else %}
+   <a href="{% url 'register_user' %}">
+    <button class="btn btn-outline-warning"> Sign Up </button>
+  </a>
+   <a href="{% url 'sign_in' %}">
+    <button class="btn btn-outline-success"> Sign in </button>
+  </a>
+   {% endif %} 
+
+
+
   <body> 
-    <!-- This is a dynamic variable showing a string-->
-    <p>{{name}}</p>
-    <a href="{% 'url_index' %"> <button class="btn btn-outline-primary"> HOME </button></a>
-    <br><br>
-
-
+   
     {% block content %}
 
-    {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-        {% if message.tags == 'error' %}
-        <div class="bg-danger">
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        </div>
-        {% endif %}
-        {% if message.tags == 'success' %}
-        <div class="bg-success">
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        </div>
-        {% endif %}
-        {% if message.tags == 'info' %}
-        <div class="bg-info">
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        </div>
-        {% endif %}
-      {% endfor %}
-    </ul>
-    {% endif %}
   
     <h3>Student Names</h3>
-
+    <form action="{% url 'search_student' %}"method="GET">
+      {% csrf_token %}
+      <input type="search" id="student_search" name="student_search" value="{{search_keyword}}">
+      <button class="btn btn-outline-info"> SEARCH </button>
+    </form>
+<br>
     <a href="{% url 'add_students' %}">
       <button class="btn btn-outline-success"> ADD STUDENT </button>
     </a> 
@@ -54,6 +55,7 @@
           <th scope="col">Phone Number</th>
           <th scope="col">Reported On</th>
           <th scope="col">Update Record</th>
+          <th scope="col">Delete Record</th>
         </tr>
       </thead>
       <tbody>
@@ -69,6 +71,11 @@
           <td>
             <a href="{% url 'update_student' id=student.id %}">
               <button class="btn btn-success">Update</button>
+            </a>
+          </td>
+          <td>
+            <a href="{% url 'delete_student' id=student.id %}">
+              <button class="btn btn-danger">Delete</button>
             </a>
           </td>
         </tr>
@@ -91,6 +98,8 @@
       </span>
     </div>
     <br><br>
+
+
     {% endblock %}
     </table>
   </body>

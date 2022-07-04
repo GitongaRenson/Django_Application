@@ -33,7 +33,7 @@ class UpdateStudentForm(forms.ModelForm):
   phone_number = forms.CharField(max_length=100,label='Update Student Phone Number:',widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter the Phone Number here'}))
   class Meta:
     model = StudentNames
-    fields =  ['name','email', 'gender','phone_number','course']
+    fields =  ['name','email','phone_number','course']
   
   def clean_phone_number(self):
     phone = self.cleaned_data['phone_number']

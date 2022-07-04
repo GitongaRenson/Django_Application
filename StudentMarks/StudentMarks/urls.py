@@ -25,9 +25,11 @@ from django.conf.urls import url, include
 #This is the main urls configuration, all the apps are connected here
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'^',include('authentication.urls')),
     url(r'^',include('home.urls')),
 ]
-
+   
+  
 #This is the defacto config for setting up the static files in a django application
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
