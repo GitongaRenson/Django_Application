@@ -36,7 +36,7 @@ def index(request):
     return render(request,'home/index.html',args)
 
 
-@login_required(login_url='sign-in/')
+@login_required(login_url='/sign-in/')
 def add_students(request):
     if request.method == 'POST':
         form = AddStudentForms(request.POST)
@@ -58,7 +58,7 @@ def add_students(request):
 
 
 
-@login_required(login_url='sign-in/')
+@login_required(login_url='/sign-in/')
 def update_student(request,id):
     instance = StudentNames.objects.get(id=id)
     if request.method == 'POST':
@@ -72,6 +72,9 @@ def update_student(request,id):
             form.instance.course = form.cleaned_data['course']
             form_instance.save()
             messages.add_message(request, messages.SUCCESS, 'Data Updated Successfully.')
+            email = form.cleaned_data['email']
+            message = 'Hello, '+name+ ' Your details have been updated in your student portal. If you have not trigger this please visit your department for further assistance.'
+            send_confirmation_email(email,message)
             return redirect('index')
 
         else:
@@ -86,7 +89,7 @@ def update_student(request,id):
 
 
 
-@login_required(login_url='sign-in/')
+@login_required(login_url='/sign-in/')
 def delete_student(request,id):
     instance = StudentNames.objects.get(id=id)
     instance.delete()

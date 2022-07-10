@@ -42,7 +42,7 @@ def sign_in(request):
          
           if user is not None:
             login(request,user)
-            messages.add_message(request, messages.SUCCESS, 'You have Loggd in Successfully.')
+            messages.add_message(request, messages.SUCCESS, 'You have Logged in Successfully.')
             return redirect('index')
         
           else:
@@ -60,4 +60,12 @@ def sign_in(request):
 
 def sign_out(request):
   logout(request)
+  messages.add_message(request, messages.WARNING, 'You have Logged out Successfully.')
   return redirect('index')
+
+
+
+def password_reset_complete(request):
+    messages.add_message(request, messages.SUCCESS, 'You have reset your password Successfully.')
+    return redirect('index')
+
