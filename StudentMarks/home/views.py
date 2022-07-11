@@ -1,6 +1,7 @@
 import argparse
 import email
 import re
+from unicodedata import name
 from urllib import request
 from django.shortcuts import redirect, render
 from .models import StudentNames
@@ -13,6 +14,7 @@ from django.contrib import messages
 from django.db.models import Q
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+from .utils import send_confirmation_email
 # Create your views here.
 
 #This is the default root index for the application and should be accessed from the browser.
@@ -71,10 +73,14 @@ def update_student(request,id):
             form.instance.phone_number = form.cleaned_data['phone_number']
             form.instance.course = form.cleaned_data['course']
             form_instance.save()
-            messages.add_message(request, messages.SUCCESS, 'Data Updated Successfully.')
+            messages.add_message(request, messages.SUCCESS, form.cleaned_data['name']+' Data Updated Successfully.')
             email = form.cleaned_data['email']
-            message = 'Hello, '+name+ ' Your details have been updated in your student portal. If you have not trigger this please visit your department for further assistance.'
-            send_confirmation_email(email,message)
+            message = 'Hello, '+name+ ' Your details have been updated in your student portal. If you have not triggered this please visit your department for further assistance.'
+            subject = 'Student Details Update'
+            request = request
+            mail_data = {'email':email,'message':message,'subject':subject}
+            mail = send_confirmation_email(mail_data)
+            messages.add_message(request, messages.INFO, mail)
             return redirect('index')
 
         else:
@@ -92,6 +98,15 @@ def update_student(request,id):
 @login_required(login_url='/sign-in/')
 def delete_student(request,id):
     instance = StudentNames.objects.get(id=id)
+    email = instance.email
+    message = 'hello' +name+'Your details have been deleted from the Student database. If you did not request for this please contant the head of department'
+    subject = 'Customer Data Removed!'
+    mail_data = {'email':email,'message':message,'subject':subject}
+    mail = send_confirmation_email(mail_data)
+    messages.add_message(request, messages.INFO, mail)
+
+
+
     instance.delete()
     messages.add_message(request, messages.INFO, 'Student Deleted Successfully.')
     return redirect('index')
