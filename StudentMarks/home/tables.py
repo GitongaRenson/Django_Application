@@ -7,4 +7,4 @@ from .models import StudentNames
 class StudentTable(tables.Table):
    class Meta:
       model = StudentNames
-      fields = ['name','email','gender','phone_number','course','reported_on']
+      fields = ['name','email','gender','phone_number','course','gpa','reported_on']

@@ -28,6 +28,7 @@ class StudentNames(models.Model):
   gender = models.CharField(max_length= 20, choices=GENDER_CHOICES)
   phone_number = models.CharField(max_length=20, unique=True)
   course = models.CharField(max_length=20, choices=COURSE_CHOICES)
+  gpa = models.FloatField()
   reported_on = models.DateTimeField(auto_now_add=True)
 
   

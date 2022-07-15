@@ -11,10 +11,12 @@ class AddStudentForms(forms.ModelForm):
 
   phone_number = forms.CharField(max_length=100,label='Enter Student Phone Number:',widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter the Phone Number here'}))
 
+  gpa = forms.FloatField(label='Enter Student GPA:',widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Student GPA Here'}))
+
 
   class Meta:
     model = StudentNames
-    fields = ['name','email', 'gender','phone_number','course']#custom validation on django forms
+    fields = ['name','email', 'gender','phone_number','gpa','course']#custom validation on django forms
     
   def clean_phone_number(self):
     phone = self.cleaned_data['phone_number']
@@ -31,9 +33,12 @@ class UpdateStudentForm(forms.ModelForm):
   email = forms.CharField(max_length=100,label='Update Student Email:',widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Student email Here'}))
 
   phone_number = forms.CharField(max_length=100,label='Update Student Phone Number:',widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter the Phone Number here'}))
+  
+  gpa = forms.FloatField(label='Enter Student GPA:',widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Student GPA Here'}))
+
   class Meta:
     model = StudentNames
-    fields =  ['name','email','phone_number','course']
+    fields =  ['name','email','phone_number','course','gpa']
   
   def clean_phone_number(self):
     phone = self.cleaned_data['phone_number']

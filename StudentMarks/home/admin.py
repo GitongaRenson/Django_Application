@@ -8,11 +8,11 @@ admin.site.index_title = 'Admin Portal'
 
 
 
-class AdminCUstomerNames(admin.ModelAdmin):
-  list_display = ['id','name','email','gender','course','phone_number']
+class AdminStudentNames(admin.ModelAdmin):
+  list_display = ['id','name','email','gender','course','phone_number','gpa']
   list_display_links = ['id']
   list_per_page = 5
-  search_fields =['name','email','phone_number','course','gender']
+  search_fields =['name','email','phone_number','course','gender','gpa']
   list_filter = ['gender','course']
 
 
@@ -21,4 +21,4 @@ class AdminCUstomerNames(admin.ModelAdmin):
     model = StudentNames
 
 
-admin.site.register(StudentNames,AdminCUstomerNames)
+admin.site.register(StudentNames,AdminStudentNames)

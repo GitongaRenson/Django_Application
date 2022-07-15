@@ -1,10 +1,26 @@
+import email
 import imp
+from multiprocessing import reduction
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.template.context_processors import csrf
+
+from home import serializers
 from .forms import UserRegistrationForm, UserLoginForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import authentication,permissions
+from rest_framework import status,generics,filters
+
+from .serializers import *
+from rest_framework.parsers import JSONParser
+from drf_yasg.utils import swagger_auto_schema
+from django.utils.decorators import method_decorator
+from rest_framework.decorators import action
+
 
 # Create your views here.
 
@@ -69,3 +85,31 @@ def password_reset_complete(request):
     messages.add_message(request, messages.SUCCESS, 'You have reset your password Successfully.')
     return redirect('index')
 
+
+
+
+class ApiAuthentication(generics.CreateAPIView):
+  serializer_class = LoginSerializer
+  parser_classes=[JSONParser]
+
+  @method_decorator(
+    name='post',
+    decorator=swagger_auto_schema(
+      responses= {200: 'Json object with access token and refresh token'},
+      operation_id='Generate JWT Token',
+      operation_description="""This endpoint is supposed to be used to generate a JWT token to be used for authenticating other api's in the system. It accepts a json object with username and password and returns an access and a refresh token. """
+      ),
+  )
+
+
+
+  def post(self,request):
+    serializer = LoginSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    username = request.data.get('username')
+    user = User.objects.get(username=username)
+    refresh = RefreshToken.for_user(user)
+    data = {'refresh': str(refresh),'access': str(refresh.access_token)}
+    return Response(data,status=status.HTTP_200_OK)
+    
+  
