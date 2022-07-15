@@ -30,7 +30,7 @@ import dj_database_url
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -60,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'StudentMarks.urls'
@@ -193,6 +194,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT =  os.path.join(REPOSITORY_ROOT,'static/',)
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(REPOSITORY_ROOT,'MEDIA/')
+STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
 django_heroku.settings(locals())
 
 # Default primary key field type

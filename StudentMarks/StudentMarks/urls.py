@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from django.conf.urls import url, include, re_path
+from django.urls import include, re_path 
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
@@ -46,9 +46,9 @@ urlpatterns = [
     re_path(r'^api-docs/redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('admin/', admin.site.urls),
     #url(r'^api-auth/',include('rest_framework.urls')),
-    url(r'^',include('authentication.urls')),
+    re_path(r'^',include('authentication.urls')),
   
-    url(r'^',include('home.urls')),
+    re_path(r'^',include('home.urls')),
 ]
    
   
