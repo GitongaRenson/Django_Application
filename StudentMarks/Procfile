@@ -1,0 +1,2 @@
+release: python manage
+web:gunicorn student management system.wsgi --log-file-

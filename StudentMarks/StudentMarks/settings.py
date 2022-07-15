@@ -12,11 +12,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 
+import django
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 import os
 from decouple import config
 from datetime import timedelta
+import django_heroku
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -27,7 +30,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -185,9 +188,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 REPOSITORY_ROOT = os.path.dirname(BASE_DIR)
 STATIC_URL = '/static/'
-STATIC_ROOT =  os.path.join(REPOSITORY_ROOT,'static/')
+STATIC_ROOT =  os.path.join(REPOSITORY_ROOT,'static/','staticfiles')
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(REPOSITORY_ROOT,'MEDIA/')
+django_heroku.settings(locals())
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -210,7 +214,7 @@ QUOTES_BASE_URL = config('QUOTES_BASE_URL')
 from django.contrib.messages import constants as messages
 
 MESSAGE_TAGS = {
-    messages.DEBUG: 'alert-info',
+    messages.DEBUG: 'alert-info', 
     messages.INFO: 'alert-info',
     messages.SUCCESS: 'alert-success',
     messages.WARNING: 'alert-warning',
